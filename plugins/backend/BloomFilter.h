@@ -5,8 +5,6 @@
 #include <string>
 #include <istream>
 
-#include <db.h>
-
 #include <ei2f/plugin_common.h>
 #include <ei2f/helper.h>
 #include <ei2f/PathMixin.h>

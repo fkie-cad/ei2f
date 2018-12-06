@@ -5,7 +5,6 @@
 
 #include <unordered_set>
 #include <string>
-#include <db.h>
 #include <istream>
 
 #include <ei2f/helper.h>
