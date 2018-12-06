@@ -22,23 +22,37 @@ using namespace std;
 void load_plugins(void)
 {
     std::vector<std::string> files;
-    read_directory("./bin/plugins/", files);
-    std::vector<std::string> loadable_files;
+    std::vector<std::string> directories;
+    directories.push_back("/usr/local/lib/libei2f/");
+    directories.push_back("/usr/lib/libei2f/");
 
-    cout << "de::fraunhofer::fkie::ei2f::load_plugins: Searching plugins" << endl;
+    // Only for in build tree runs
+    directories.push_back("./.libs/");
 
-    for (auto file: files) {
-        if (ends_with(file, ".so")) {
-            loadable_files.push_back(file);
-            cout << "de::fraunhofer::fkie::ei2f::load_plugins: Found plugin '" << file << "'" << endl;
+    for (auto directory: directories) {
+        try {
+            read_directory(directory, files);
+        } catch (std::runtime_error &e) {
+            // Directory not found
+            continue;
         }
-    }
+        std::vector<std::string> loadable_files;
 
-    cout << "de::fraunhofer::fkie::ei2f::load_plugins: Loading plugins" << endl;
+        cout << "de::fraunhofer::fkie::ei2f::load_plugins: Searching plugins" << endl;
 
-    for (auto file: loadable_files) {
-        if (!dlopen(file.c_str(), RTLD_NOW))
-            cout << dlerror() << endl;
+        for (auto file: files) {
+            if (ends_with(file, ".so")) {
+                loadable_files.push_back(file);
+                cout << "de::fraunhofer::fkie::ei2f::load_plugins: Found plugin '" << file << "'" << endl;
+            }
+        }
+
+        cout << "de::fraunhofer::fkie::ei2f::load_plugins: Loading plugins" << endl;
+
+        for (auto file: loadable_files) {
+            if (!dlopen(file.c_str(), RTLD_NOW))
+                cout << dlerror() << endl;
+        }
     }
 }
 

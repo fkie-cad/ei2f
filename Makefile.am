@@ -1,6 +1,8 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
 AM_CXXFLAGS = -std=c++11 -Wall -O2 -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c++11 -Iinclude -I$(top_srcdir)/include
 
+plugins_dir=$(DESTDIR)@libdir@/libei2f/
+
 #nobase_include_HEADERS = plugins/backend/Online.h \
 #                         plugins/backend/PocoSQLite.h \
 #                         plugins/backend/BerkeleyDB.h \
@@ -126,3 +128,21 @@ test_string_replace_SOURCES = test/test_string_replace.cpp
 test_string_replace_LDADD = libei2f.la
 
 SUBDIRS = include
+
+install-exec-hook:
+	mkdir -p ${plugins_dir}
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.Online.so libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.Online.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.PocoSQLite.so libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.PocoSQLite.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.BerkeleyDB.so libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.BerkeleyDB.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.StdUnorderedSet.so libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.StdUnorderedSet.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.BloomFilter.so libei2f.plugin.de.fraunhofer.fkie.ei2f.backend.BloomFilter.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.transport.HTTP.so libei2f.plugin.de.fraunhofer.fkie.ei2f.transport.HTTP.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.transport.File.so libei2f.plugin.de.fraunhofer.fkie.ei2f.transport.File.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.translator.SHA256.so libei2f.plugin.de.fraunhofer.fkie.ei2f.translator.SHA256.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.Binary.so libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.Binary.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.Line.so libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.Line.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.DifferentialLine.so libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.DifferentialLine.so
+	cd ${plugins_dir} && ln -fs ../libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.DifferentialLineSeparated.so libei2f.plugin.de.fraunhofer.fkie.ei2f.updater.DifferentialLineSeparated.so
+
+uninstall-hook:
+	rm -rf ${plugins_dir}
