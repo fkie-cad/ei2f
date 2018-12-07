@@ -8,6 +8,7 @@
 
 using namespace std;
 
+using namespace de::fraunhofer::fkie::ei2f;
 void test_string_replace_all_by_dict(void)
 {
     cout << "Running " << __FUNCTION__ << endl;

@@ -6,12 +6,10 @@
 #include <iostream>
 #include <unordered_map>
 
-/*
 namespace de {
 namespace fraunhofer {
 namespace fkie {
 namespace ei2f {
-*/
 
 void read_directory(const std::string& name, std::vector<std::string>& v);
 bool starts_with(const std::string &mainStr, const std::string &toMatch);
@@ -40,6 +38,6 @@ struct OMemoryStream: virtual OMemoryBuffer, std::ostream
 };
 */
 
-//}}}}
+}}}}
 
 #endif // DE_FRAUNHOFER_FKIE_EI2F_HELPER_H
