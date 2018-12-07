@@ -73,7 +73,7 @@ libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_LIBADD = libei2f.la
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_SOURCES = plugins/backend/PocoSQLite.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LDFLAGS = -shared --gc-sections
-libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LIBADD = libei2f.la -lPocoDataSQLite -lPocoData -PocoFoundation
+libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LIBADD = libei2f.la -lPocoDataSQLite -lPocoData -lPocoFoundation
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_BerkeleyDB_la_SOURCES = plugins/backend/BerkeleyDB.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_BerkeleyDB_la_LDFLAGS = -shared --gc-sections
