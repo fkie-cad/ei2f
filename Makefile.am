@@ -69,11 +69,11 @@ bin_PROGRAMS = test_BloomFilter \
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_SOURCES = plugins/backend/Online.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_LDFLAGS = -shared --gc-sections
-libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_LIBADD = -lPocoFoundation libei2f.la
+libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_LIBADD = libei2f.la
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_SOURCES = plugins/backend/PocoSQLite.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LDFLAGS = -shared --gc-sections
-libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LIBADD = libei2f.la -lPocoFoundation -lPocoData -lPocoDataSQLite
+libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_PocoSQLite_la_LIBADD = libei2f.la -lPocoDataSQLite -lPocoData -PocoFoundation
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_BerkeleyDB_la_SOURCES = plugins/backend/BerkeleyDB.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_BerkeleyDB_la_LDFLAGS = -shared --gc-sections
@@ -89,7 +89,7 @@ libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_BloomFilter_la_LIBADD = libei2f.l
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_HTTP_la_SOURCES = plugins/transport/HTTP.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_HTTP_la_LDFLAGS = -shared --gc-sections
-libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_HTTP_la_LIBADD = libei2f.la -lPocoFoundation -lPocoNet -lPocoNetSSL
+libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_HTTP_la_LIBADD = libei2f.la -lPocoNetSSL -lPocoNet -lPocoFoundation
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_File_la_SOURCES = plugins/transport/File.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_File_la_LDFLAGS = -shared --gc-sections
@@ -97,7 +97,7 @@ libei2f_plugin_de_fraunhofer_fkie_ei2f_transport_File_la_LIBADD = libei2f.la
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_translator_SHA256_la_SOURCES = plugins/translator/SHA256.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_translator_SHA256_la_LDFLAGS = -shared --gc-sections
-libei2f_plugin_de_fraunhofer_fkie_ei2f_translator_SHA256_la_LIBADD = libei2f.la -lPocoFoundation -lPocoCrypto
+libei2f_plugin_de_fraunhofer_fkie_ei2f_translator_SHA256_la_LIBADD = libei2f.la -lPocoCrypto -lPocoFoundation
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_updater_Binary_la_SOURCES = plugins/updater/Binary.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_updater_Binary_la_LDFLAGS = -shared --gc-sections
