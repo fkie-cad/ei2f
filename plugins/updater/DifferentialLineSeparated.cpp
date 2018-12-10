@@ -154,10 +154,12 @@ DifferentialLineSeparated::create_from_config(const ObjectConfig& config)
     return new DifferentialLineSeparated(config);
 }
 
-static void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::updater::DifferentialLineSeparated: Initializing Plugin" << endl;
     Updater::register_factory("DifferentialLineSeparated", DifferentialLineSeparated::create_from_config);

@@ -50,8 +50,22 @@ void load_plugins(void)
         cout << "de::fraunhofer::fkie::ei2f::load_plugins: Loading plugins" << endl;
 
         for (auto file: loadable_files) {
-            if (!dlopen(file.c_str(), RTLD_NOW))
+            dlerror();
+            void * handle = dlopen(file.c_str(), RTLD_NOW);
+            if (!handle)
                 cout << dlerror() << endl;
+            dlerror();
+
+            char * error = NULL;
+            void (*init_ei2f_plugin)(void);
+
+            *(void**) (&init_ei2f_plugin) = dlsym(handle, "init_ei2f_plugin");
+            error = dlerror();
+            if (error) {
+                cout << error << endl;
+            } else {
+                init_ei2f_plugin();
+            }
         }
     }
 }

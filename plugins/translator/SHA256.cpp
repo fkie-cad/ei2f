@@ -114,10 +114,12 @@ SHA256::create(void)
     return new SHA256();
 }
 
-void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::translator::SHA256: Initializing Plugin" << endl;
     Translator::register_factory("SHA256.Binary", SHA256::create);

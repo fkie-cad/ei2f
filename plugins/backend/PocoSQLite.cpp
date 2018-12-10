@@ -156,10 +156,12 @@ PocoSQLite::clear(void)
  * Plugin loading                                   *
  ****************************************************/
 
-void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::backend::PocoSQLite: Initializing Plugin" << endl;
     Backend::register_factory("PocoSQLite", PocoSQLite::create_from_config);

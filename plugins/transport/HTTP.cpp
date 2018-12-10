@@ -119,11 +119,12 @@ configure_session_factory(void) {
     SSLManager::instance().initializeClient(0, ptrCert, context);
 }
 
-
-static void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::transport::HTTP: Initializing Plugin" << endl;
     configure_session_factory();

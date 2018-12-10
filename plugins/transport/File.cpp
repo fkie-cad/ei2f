@@ -32,10 +32,12 @@ File::create_from_config(const ObjectConfig& config) {
     return new File(config);
 }
 
-static void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::transport::File: Initilialing Plugin" << endl;
     Transport::register_factory("file", File::create_from_config);

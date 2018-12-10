@@ -125,10 +125,12 @@ Binary::create_from_config(const ObjectConfig& config)
     return new Binary(config);
 }
 
-static void on_library_load(void) __attribute__((constructor));
+extern "C" {
+    extern void init_ei2f_plugin(void);
+};
 
 void
-on_library_load(void)
+init_ei2f_plugin(void)
 {
     cout << "de::fraunhofer::fkie::ei2f::updater::Binary: Initializing Plugin" << endl;
     Updater::register_factory("Binary", Binary::create_from_config);
