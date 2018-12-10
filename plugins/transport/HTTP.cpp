@@ -52,6 +52,7 @@ HTTP::uri_to_istream(const string & raw_uri) {
         if (uri.getPort() == 0) uri.setPort(initial_uri.getPort());
 
         // setup object state
+        cout << uri.toString() << endl;
         if (!_session) {
             _session.reset(HTTPSessionFactory::defaultFactory().createClientSession(uri));
         } else if (uri.getScheme().compare(initial_uri.getScheme()) != 0
