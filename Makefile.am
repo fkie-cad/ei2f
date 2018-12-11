@@ -65,7 +65,8 @@ lib_LTLIBRARIES = libei2f.la \
 bin_PROGRAMS = test_BloomFilter \
                test_Backend_ReadIterator \
                test_string_replace \
-               test_Online
+               test_Online \
+               libei2f_bench
 
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_SOURCES = plugins/backend/Online.cpp
 libei2f_plugin_de_fraunhofer_fkie_ei2f_backend_Online_la_LDFLAGS = -shared --gc-sections
@@ -126,6 +127,9 @@ test_Backend_ReadIterator_LDADD = libei2f.la
 
 test_string_replace_SOURCES = test/test_string_replace.cpp
 test_string_replace_LDADD = libei2f.la
+
+libei2f_bench_SOURCES = src/libei2f_bench.cpp
+libei2f_bench_LDADD = libei2f.la
 
 SUBDIRS = include
 
