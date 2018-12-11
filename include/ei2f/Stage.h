@@ -1,5 +1,3 @@
-class Stage;
-
 #ifndef DE_FRAUNHFOER_FKIE_EI2F_STAGE_H
 #define DE_FRAUNHFOER_FKIE_EI2F_STAGE_H
 
