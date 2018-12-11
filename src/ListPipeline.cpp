@@ -22,7 +22,6 @@ ListPipeline::ListPipeline(const string& path)
     read_directory(path, filenames);
     std::sort(filenames.begin(), filenames.end());
     for (auto filename: filenames) {
-        cout << filename << endl;
         if (ends_with(filename, ".stage")) {
             string stagename = filename.substr(0, filename.length() - 5);
             if (stagename.length() == 0) {
@@ -68,18 +67,18 @@ ListPipeline::contains(const string& item)
 {
     ItemInfo item_info;
     item_info.set("Item", item);
-    cout << "Item: " << item  << endl;
+//    cout << "Item: " << item  << endl;
 
     for (auto stage: _stages) {
         switch (stage->contains(item_info)) {
             case ei2f::contained:
-                cout << "CONTAINED" << endl;
+//                cout << "CONTAINED" << endl;
                 return true;
             case ei2f::not_contained:
-                cout << "NOT CONTAINED" << endl;
+//                cout << "NOT CONTAINED" << endl;
                 return false;
             case ei2f::undecided:
-                cout << "UNDECIDED" << endl;
+//                cout << "UNDECIDED" << endl;
             default:
                 continue;
         }
