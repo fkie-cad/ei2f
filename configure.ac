@@ -1,4 +1,4 @@
-AC_INIT([ei2f], [0.0.1], [TBD@UNKNOWN])
+AC_INIT([ei2f], [0.0.3], [TBD@UNKNOWN])
 
 #AC_ARG_ENABLE([leveldb],
 #    AS_HELP_STRING([--enable-leveldb], [Use leveldb as dldb backend]))
