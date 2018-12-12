@@ -52,7 +52,7 @@ class PerfStdUnorderedSetStage: public Stage {
             unsigned long long buf = 0x1deadbeef;
             assert(sizeof(buf) == 8);
             ItemInfo info;
-            for(unsigned long long offset = 0; offset < 600000; ++offset, ++buf) {
+            for(unsigned long long offset = 0; offset < 50; ++offset, ++buf) {
                 string data((char*)(void*)&buf, 8);
                 info.reset("Item", data);
                 api.add(info);
@@ -185,12 +185,12 @@ int main(int argc, char **argv)
     cout << "BloomFilter: Other stages per stage in ns:    " << (elapsed8_secs-elapsed1_secs) * 1000000000.0 / (7 * testcases) << endl;
 
     // Create a new pipeline for tests with StdUnorderedSet
-    // (populated with 600000 8 byte items non zero terminated strings
+    // (populated with 50 8 byte items non zero terminated strings
     pipe.reset(new TestListPipeline("/tmp/abcdefghijklm"));
     pipe->add_test_stage(create_stdunorderedset_stage(0));
 
     // First checking timing of an item that is contained
-    unsigned long long buf = 0x1deadffff;
+    unsigned long long buf = 0x1deadbeef;
     string data((char*)(void*)&buf, 8);
     testcases *= 10;
 
