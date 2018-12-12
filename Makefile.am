@@ -129,7 +129,7 @@ test_string_replace_SOURCES = test/test_string_replace.cpp
 test_string_replace_LDADD = libei2f.la
 
 libei2f_bench_SOURCES = src/libei2f_bench.cpp
-libei2f_bench_LDADD = libei2f.la
+libei2f_bench_LDADD = libei2f.la -lcrypto
 
 SUBDIRS = include
 

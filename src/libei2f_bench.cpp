@@ -2,6 +2,7 @@
 #include <string>
 #include <assert.h>
 #include <ctime>
+#include <openssl/sha.h>
 
 // for registering factories
 #include <ei2f/ListPipeline.h>
@@ -104,11 +105,45 @@ int main(int argc, char **argv)
         cout << "Usage: " << argv[0] << "<testcases>" << endl;
         return -1;
     }
+    int testcases = std::stoi(argv[1]);
+    int testcase;
+
     if(system("mkdir -p /tmp/abcdefghijklm")) {}
     else {}
 
+    clock_t begin;
+    clock_t end;
+
     // load all plugins
     load_plugins();
+
+    // Raw sha256 bench
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    begin = clock();
+
+    for(int testcase = 0 ; testcase < testcases; ++testcase) {
+        SHA256_CTX sha256;
+        SHA256_Init(&sha256);
+        SHA256_Update(&sha256, "BLABLABLA", 9);
+        SHA256_Final(hash, &sha256);
+    }
+    end = clock();
+    double elapsed = double(end - begin) / CLOCKS_PER_SEC;
+    cout << "Raw SHA256 in ns:                             " << elapsed * 1000000000.0 / testcases << endl;
+
+
+    // sha256 in iteminfo bench
+    ItemInfo item;
+    string str("BLABLALBA");
+    begin = clock();
+
+    for(int testcase = 0 ; testcase < testcases; ++testcase) {
+        item.reset("Item", str);
+        item.get("SHA256.Binary");
+    }
+    end = clock();
+    elapsed = double(end - begin) / CLOCKS_PER_SEC;
+    cout << "SHA256 in ItemInfo in ns:                     " << elapsed * 1000000000.0 / testcases << endl;
 
     unsigned int stages = 8;
 
@@ -117,18 +152,17 @@ int main(int argc, char **argv)
 
     // For now only add one stage
     pipe->add_test_stage(create_bloom_stage(0, 0));
-    int testcases = std::stoi(argv[1]);
 
     // measure response times for single stage bloomfilter pipeline start ...
-    clock_t begin = clock();
+    begin = clock();
 
-    for (int testcase = 0; testcase < testcases; ++testcase) {
+    for (testcase = 0; testcase < testcases; ++testcase) {
         assert(pipe->contains("BLABLABLA") == false);
     }
 
 
     // .. end measure response times for single stage bloomfilter pipeline
-    clock_t end = clock();
+    end = clock();
     double elapsed1_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     // adding 7 more bloomfilter stages to measure secondary bloomfilter timings
@@ -139,7 +173,7 @@ int main(int argc, char **argv)
     // start measure ...
     begin = clock();
 
-    for (int testcase = 0; testcase < testcases; ++testcase) {
+    for (testcase = 0; testcase < testcases; ++testcase) {
         assert(pipe->contains("BLABLABLA") == false);
     }
 
