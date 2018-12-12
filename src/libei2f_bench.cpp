@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <ctime>
 #include <openssl/sha.h>
+#include <string.h>
 
 // for registering factories
 #include <ei2f/ListPipeline.h>
@@ -79,6 +80,22 @@ StagePtr create_bloom_stage(unsigned id, unsigned int bit_offset) {
     config["Backend.Path"]="";
     config["Backend.UUID"]="00000000-0000-0000-0000-000000000000";
     config["Backend.ItemKey"]="SHA256.Binary";
+    config["Backend.HashBits"]="22";
+    config["Backend.HashBitsOffset"]= std::to_string(bit_offset);
+    StagePtr result(new PerfBloomStage(config));
+    return result;
+}
+
+StagePtr create_nohash_bloom_stage(unsigned id, unsigned int bit_offset) {
+    ObjectConfig config;
+//    config["Stage.Dir"]="./listspool/test2/";
+    config["Stage.PersistenceLevel"]="None";
+    config["Stage.Name"]=std::to_string(id);
+    config["Backend.Type"]="BloomFilter";
+    config["Backend.Path"]="";
+    config["Backend.UUID"]="00000000-0000-0000-0000-000000000000";
+//    config["Backend.ItemKey"]="SHA256.Binary";
+    config["Backend.ItemKey"]="Item";
     config["Backend.HashBits"]="22";
     config["Backend.HashBitsOffset"]= std::to_string(bit_offset);
     StagePtr result(new PerfBloomStage(config));
@@ -163,26 +180,29 @@ int main(int argc, char **argv)
 
     // .. end measure response times for single stage bloomfilter pipeline
     end = clock();
-    double elapsed1_secs = double(end - begin) / CLOCKS_PER_SEC;
+    elapsed = double(end - begin) / CLOCKS_PER_SEC;
 
-    // adding 7 more bloomfilter stages to measure secondary bloomfilter timings
-    for (unsigned int i = 1; i < stages; ++i) {
-        pipe->add_test_stage(create_bloom_stage(i, i*22));
-    }
+    cout << "BloomFilter: First stage in ns:               " << elapsed * 1000000000.0 / testcases << endl;
+
+    // bloomfilter stage to measure secondary bloomfilter timings
+    pipe.reset(new TestListPipeline("/tmp/abcdefghijklm"));
+    pipe->add_test_stage(create_nohash_bloom_stage(0, 0));
+    char hash_buf[32];
+    memset(hash_buf,0,32);
+    string hashed_data(hash_buf,32);
 
     // start measure ...
     begin = clock();
 
     for (testcase = 0; testcase < testcases; ++testcase) {
-        assert(pipe->contains("BLABLABLA") == false);
+        assert(pipe->contains(hashed_data) == false);
     }
 
     // ... end measure
     end = clock();
-    double elapsed8_secs = double(end - begin) / CLOCKS_PER_SEC;
+    elapsed = double(end - begin) / CLOCKS_PER_SEC;
 
-    cout << "BloomFilter: First stage in ns:               " << elapsed1_secs * 1000000000.0 / testcases << endl;
-    cout << "BloomFilter: Other stages per stage in ns:    " << (elapsed8_secs-elapsed1_secs) * 1000000000.0 / (7 * testcases) << endl;
+    cout << "BloomFilter: Other stages per stage in ns:    " << elapsed * 1000000000.0 / testcases << endl;
 
     // Create a new pipeline for tests with StdUnorderedSet
     // (populated with 50 8 byte items non zero terminated strings
