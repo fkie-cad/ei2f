@@ -17,9 +17,10 @@ const char * const cyclic_error_message = "A recursive call in ItemInfo Keys was
 
 string& ItemInfo::get(const string& key)
 {
-    try {
-        return _lookup.at(key);
-    } catch (out_of_range& e) {}
+    std::unordered_map<string,string>::iterator iter = _lookup.find(key);
+    if (iter != _lookup.end()) {
+        return iter->second;
+    }
 
     // This will throw an exception if the key was already queried in get before in this
     // recursive call
