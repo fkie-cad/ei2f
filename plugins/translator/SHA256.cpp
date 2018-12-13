@@ -4,6 +4,8 @@
 #include <ei2f/ItemInfo.h>
 #include <ei2f/translator/Translator.h>
 
+#include <openssl/sha.h>
+
 #include "SHA256.h"
 
 namespace de {
@@ -24,6 +26,9 @@ SHA256::~SHA256()
 {
     // INTENTIONALLY LEFT EMPTY
 }
+
+static const string pattern_sha256_binary("SHA256.Binary");
+static const string pattern_item("Item");
 
 void SHA256::enrich_salted(ItemInfo& item_info, const string& key)
 {
@@ -101,7 +106,19 @@ void SHA256::enrich_unsalted(ItemInfo& item_info, const string& key)
 
 void SHA256::enrich(ItemInfo& item_info, const string& key)
 {
-    if (key == "SHA256.Binary" || key == "SHA256.Hex") {
+    if (key == pattern_sha256_binary) {
+        string& value = item_info.get(pattern_item);
+        unsigned char hash[SHA256_DIGEST_LENGTH];
+
+        SHA256_CTX sha256;
+        SHA256_Init(&sha256);
+        SHA256_Update(&sha256, value.c_str(), value.size());
+        SHA256_Final(hash, &sha256);
+
+        string data((const char *)&hash, SHA256_DIGEST_LENGTH);
+        item_info.set(pattern_sha256_binary, data);
+
+    } else if (key == "SHA256.Binary" || key == "SHA256.Hex") {
         enrich_unsalted(item_info, key);
     } else if (key == "SHA256.Salted.Binary" || key == "SHA256.Salted.Hex") {
         enrich_salted(item_info, key);
